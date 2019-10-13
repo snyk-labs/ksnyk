@@ -1,7 +1,6 @@
 import click
 
-from ksnyk.annotate import (augment, augment_deployments,
-                            augment_replicationcontrollers)
+from ksnyk.annotate import augment, augment_deployments, augment_replicationcontrollers
 from ksnyk.helpers import get_snyk_projects, load_config
 
 

@@ -6,16 +6,16 @@ from ksnyk.helpers import load_config
 
 @click.group()
 @load_config
-def ksnyk():
+def cli():
     """
     ksnyk - an experimental tool for working with Snyk and Kubernetes
     """
     pass
 
 
-ksnyk.add_command(annotate)
-ksnyk.add_command(import_vulnerabilities, "import")
-ksnyk.add_command(crd)
+cli.add_command(annotate)
+cli.add_command(import_vulnerabilities, "import")
+cli.add_command(crd)
 
 if __name__ == "__main__":
-    ksnyk()
+    cli()
