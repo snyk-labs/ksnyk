@@ -32,7 +32,7 @@ available to paying customers.
 Init sets up or updates the Custom Resource definition for `Vulnerability` which is used by the `import` subcommand.
 `init` requires a working version of `kubectl` to be on the path`
 
-```script
+```console
 $ ksnyk crd
 customresourcedefinition.apiextensions.k8s.io/vulnerabilities.snyk.io unchanged
 ```
@@ -48,7 +48,7 @@ $ ksnyk crd --show
 
 With the Vulnerability CRD installed in the cluster, you can import issues from Snyk into Kubernetes.
 
-```script
+```console
 $ ksnyk import
 Skipping Snyk project snyk-kubernetes-demos:Pipfile
 Skipping Snyk project garethr/snyky:latest
@@ -69,7 +69,7 @@ Checking snyk-linux-shadow-11609
 
 With vulnerabilites imported you can then use the Kubernetes API to check for vulnerabilities in a specific namespoace.
 
-```script
+```console
 $ kubectl get vulns
 NAME                               TITLE                                  IMAGE                             PACKAGE                         SEVERITY
 02fdaaaf731bb70448ea3b92375a1936   Insufficient Entropy                   nginx                             gcc-8/libstdc++6                high
@@ -85,7 +85,7 @@ NAME                               TITLE                                  IMAGE 
 
 You can access more information if you have a wide terminal, using the standard `wide` output.
 
-```script
+```console
 $ kubectl get vulns -o wide
 ```
 
@@ -97,7 +97,7 @@ Annotate adds annotates to workloads with a matching Snyk project. Specifically 
 * The number of high, medium and low severity vulnerabilities
 * A link to the Snyk project for the workload
 
-```
+```console
 $ ksnyk annotate
 Found snyky in Kubernetes
 Found compose in Kubernetes
@@ -110,7 +110,7 @@ Found example-rc in Kubernetes
 Annotating default/replicationcontroller/example-rc:nginx
 ```
 
-```
+```console
 $ kubectl describe rc example-rc
 Name:         example-rc
 Namespace:    default

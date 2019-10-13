@@ -1,12 +1,12 @@
-import os
-import sys
-import subprocess
 import base64
 import hashlib
+import os
+import subprocess
+import sys
 
 import click
-from kubernetes import client, config
 import snyk
+from kubernetes import client, config
 
 
 def get_snyk_projects():
@@ -33,19 +33,21 @@ def get_snyk_projects():
         return snyk_client.projects.all()
 
 
-
 def load_config(f):
     def callback(ctx, param, value):
         if value:
             config.load_incluster_config()
         else:
             config.load_kube_config()
-    return click.option('--cluster',
-                        is_flag=True,
-                        default=False,
-                        expose_value=False,
-                        help='Load Kubernetes credentials from cluster',
-                        callback=callback)(f)
+
+    return click.option(
+        "--cluster",
+        is_flag=True,
+        default=False,
+        expose_value=False,
+        help="Load Kubernetes credentials from cluster",
+        callback=callback,
+    )(f)
 
 
 @click.group()
@@ -138,9 +140,9 @@ def augment(projects, kind, list_function, patch_function):
                 obj.metadata.annotations["snyk.io/high-priority-vulnerabilities"] = str(
                     project.issueCountsBySeverity.high
                 )
-                obj.metadata.annotations["snyk.io/medium-priority-vulnerabilities"] = str(
-                    project.issueCountsBySeverity.medium
-                )
+                obj.metadata.annotations[
+                    "snyk.io/medium-priority-vulnerabilities"
+                ] = str(project.issueCountsBySeverity.medium)
                 obj.metadata.annotations["snyk.io/low-priority-vulnerabilities"] = str(
                     project.issueCountsBySeverity.low
                 )
@@ -148,7 +150,6 @@ def augment(projects, kind, list_function, patch_function):
                 patch_function(obj.metadata.name, obj.metadata.namespace, obj)
         except ValueError:
             pass
-
 
 
 @click.command()
@@ -171,7 +172,7 @@ def import_vulnerabilities():
                 encoded = combined.encode("utf-8")
                 ident = hashlib.md5(encoded).hexdigest()
 
-                body={
+                body = {
                     "apiVersion": "snyk.io/v1",
                     "kind": "Vulnerability",
                     "metadata": {"name": ident},
@@ -197,7 +198,9 @@ def import_vulnerabilities():
                     },
                 }
                 try:
-                    api.get_namespaced_custom_object(group, version, namespace, plural, ident)
+                    api.get_namespaced_custom_object(
+                        group, version, namespace, plural, ident
+                    )
                     api.patch_namespaced_custom_object(
                         group=group,
                         version=version,
@@ -234,7 +237,7 @@ def crd(show):
     package_dir, _ = os.path.split(__file__)
     crd_file = os.path.join(package_dir, "vulnerability.yaml")
     if show:
-        with open(crd_file, 'r') as handle:
+        with open(crd_file, "r") as handle:
             click.echo(handle.read())
     else:
         subprocess.run(["kubectl", "apply", "-f", crd_file])

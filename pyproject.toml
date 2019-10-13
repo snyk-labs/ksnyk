@@ -16,6 +16,7 @@ kubernetes = "^10.0"
 
 [tool.poetry.dev-dependencies]
 pytest-black = "^0.3.7"
+pytest-isort = "^0.3.1"
 
 [tool.poetry.scripts]
 ksnyk = "ksnyk:ksnyk"
