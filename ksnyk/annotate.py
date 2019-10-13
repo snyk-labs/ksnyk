@@ -2,9 +2,9 @@ import click
 from kubernetes import client
 
 
-def augment_replicationcontrollers(projects):
+def add_to_replicationcontrollers(projects):
     api = client.CoreV1Api()
-    augment(
+    add_to(
         projects,
         "replicationcontroller",
         api.list_replication_controller_for_all_namespaces,
@@ -12,9 +12,9 @@ def augment_replicationcontrollers(projects):
     )
 
 
-def augment_deployments(projects):
+def add_to_deployments(projects):
     api = client.AppsV1Api()
-    augment(
+    add_to(
         projects,
         "deployment.apps",
         api.list_deployment_for_all_namespaces,
@@ -22,7 +22,17 @@ def augment_deployments(projects):
     )
 
 
-def augment(projects, kind, list_function, patch_function):
+def add_to_cronjobs(projects):
+    api = client.BatchV1beta1Api()
+    add_to(
+        projects,
+        "cronjob.batc",
+        api.list_cron_job_for_all_namespaces,
+        api.patch_namespaced_cron_job,
+    )
+
+
+def add_to(projects, kind, list_function, patch_function):
     """
     Given a list of projects and the required functions for a given kind
     Add annotations to the object with information from the Snyk API
