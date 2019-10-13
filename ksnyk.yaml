@@ -1,0 +1,53 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ksnyk-import
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ksnyk-import
+            image: garethr/ksnyk:latest
+            args:
+            - --cluster
+            - import
+            env:
+            #- name: SNYK_API
+            #  value: "https://app.dev.snyk.io/api/"
+            - name: SNYK_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: snyk
+                  key: token
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ksnyk-annotate
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: ksnyk-annotate
+            image: garethr/ksnyk:latest
+            args:
+            - --cluster
+            - annotate
+            env:
+            #- name: SNYK_API
+            #  value: "https://app.dev.snyk.io/api/"
+            - name: SNYK_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: snyk
+                  key: token
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
