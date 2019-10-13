@@ -26,6 +26,9 @@ available to paying customers.
 * `import` - import vulnerability information from Snyk into the Kubernetes Vulnerability CRD
 * `annotate` - annotate workloads with vulnerability information from Snyk
 
+Note that `ksnyk` can also be used as a `kubectl` plugin. Instead of calling `ksnyk` you can instead use
+`kubectl snyk`. 
+
 
 ### crd
 

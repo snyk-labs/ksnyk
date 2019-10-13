@@ -8,7 +8,7 @@ from ksnyk.helpers import load_config
 @load_config
 def cli():
     """
-    ksnyk - an experimental tool for working with Snyk and Kubernetes
+    An experimental set of tools for working with Snyk and Kubernetes
     """
     pass
 
